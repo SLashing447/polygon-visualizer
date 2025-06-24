@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polygon Visualizer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="controls" id="controls"></div>
+      <svg id="svg" width="500" height="500">
+        <defs>
+          <clipPath id="dynamicClip">
+            <polygon id="dynamicClipPath" />
+          </clipPath>
+        </defs>
+
+        <!-- Grid (base) -->
+        <g id="gridGroup"></g>
+
+        <!-- Grid under dynamic shape -->
+        <g id="highlightedGrid" clip-path="url(#dynamicClip)"></g>
+
+        <!-- Dynamic filled polygon -->
+        <polygon
+          id="dynamicPolygon"
+          fill="rgba(99, 114, 212, 0.3)"
+          stroke="cyan"
+          stroke-width="2"
+        />
+
+        <!-- Spokes (full length from center to outer radius) -->
+        <g id="spokesGroup"></g>
+
+        <!-- Handles, labels -->
+        <g id="handlesGroup"></g>
+        <g id="labelsGroup"></g>
+      </svg>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

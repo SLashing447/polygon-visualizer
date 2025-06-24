@@ -1,0 +1,69 @@
+:root {
+  --BASE_POLY_COL: rgba(31, 66, 37, 0.7);
+  --DYNAMIC_POLY_STROKE: rgb(93, 255, 5);
+  --DYNAMIC_POLY_FILL: rgba(40, 142, 84, 0.5);
+  --HIGHLIGHTED_POLY_STROKE: lime;
+  --STROKE-WIDTH: 2;
+  --LABEL-FILL: rgb(71, 124, 71);
+  --sides: 5;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #111;
+  color: white;
+}
+
+.container {
+  padding: 20px;
+  /* width: 700px; */
+  /* border: 2px solid red; */
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.control-group label {
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.handle {
+  fill: transparent;
+
+  stroke: transparent;
+  /* stroke-width: px; */
+}
+
+.label {
+  font-size: 16px;
+  font-weight: bold;
+  /* color: lime; */
+  fill: var(--LABEL-FILL);
+  /* padding: 12px; */
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+#highlightedGrid line,
+#highlightedGrid polygon {
+  stroke: var(--HIGHLIGHTED_POLY_STROKE);
+  stroke-width: var(--STROKE-WIDTH);
+}
