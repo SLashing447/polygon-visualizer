@@ -1,5 +1,4 @@
 const svg = document.getElementById("svg");
-const controls = document.getElementById("controls");
 const gridGroup = document.getElementById("gridGroup");
 const highlightedGrid = document.getElementById("highlightedGrid");
 const dynamicPolygon = document.getElementById("dynamicPolygon");
@@ -7,6 +6,8 @@ const dynamicClipPath = document.getElementById("dynamicClipPath");
 const spokesGroup = document.getElementById("spokesGroup");
 const handlesGroup = document.getElementById("handlesGroup");
 const labelsGroup = document.getElementById("labelsGroup");
+const container = document.querySelector(".container");
+// const area = document.getElementById("#areax");
 
 const BASE_POLY_COL = "var(--BASE_POLY_COL)";
 const DYNAMIC_POLY_STROKE = "var(--DYNAMIC_POLY_STROKE)";
@@ -35,15 +36,17 @@ function getVertex(angle, scale = 1) {
 
 function updatePolygon(sides, values, Labels) {
   const points = [];
+  const numericPoints = []; // store as [x, y] pairs
+
   handlesGroup.innerHTML = "";
   labelsGroup.innerHTML = "";
 
-
-  // extract scores for each catergory 
+  // extract scores for each catergory
   values.forEach((val, i) => {
     const angle = (2 * Math.PI * i) / sides - Math.PI / 2;
     const v = getVertex(angle, val / 100);
     points.push(`${v.x},${v.y}`);
+    numericPoints.push([v.x, v.y]);
 
     const dot = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -55,7 +58,7 @@ function updatePolygon(sides, values, Labels) {
     dot.setAttribute("class", "handle");
     handlesGroup.appendChild(dot);
 
-    const labelOffset = 18;
+    const labelOffset = 20;
     const lx = cx + (radius + labelOffset) * Math.cos(angle);
     const ly = cy + (radius + labelOffset) * Math.sin(angle);
 
@@ -69,6 +72,13 @@ function updatePolygon(sides, values, Labels) {
 
   dynamicPolygon.setAttribute("points", points.join(" "));
   dynamicClipPath.setAttribute("points", points.join(" "));
+
+  const dynamicArea = calculateArea(numericPoints);
+  const staticArea = regularPolygonArea(sides, radius);
+  const coveragePercent = (dynamicArea / staticArea) * 100;
+
+  const area = "Pogress : " + coveragePercent.toFixed(2) + "%";
+  container.setAttribute("aria-details", `${area}`);
 }
 
 function drawGrid(sides) {
@@ -124,9 +134,45 @@ function drawGrid(sides) {
   }
 }
 
+function calculateArea(points) {
+  let area = 0;
+  const n = points.length;
+
+  for (let i = 0; i < n; i++) {
+    const [x1, y1] = points[i];
+    const [x2, y2] = points[(i + 1) % n];
+    area += x1 * y2 - x2 * y1;
+  }
+
+  return Math.abs(area) / 2;
+}
+function regularPolygonArea(sides, radius) {
+  return 0.5 * sides * radius * radius * Math.sin((2 * Math.PI) / sides);
+}
+
+container.addEventListener("click", () => {
+  if (container.classList.contains("hidearea")) {
+    container.classList.remove("hidearea");
+  } else {
+    container.classList.add("hidearea");
+  }
+});
+
 // createControls();
 // drawGrid(n);
 // updatePolygon(n);
+
+// const N = 10;
+// const labels = [];
+// const vals = [];
+
+// for (let i = 1; i <= N; i++) {
+//   vals.push(`${i * (100 / N)}`);
+//   labels.push(`target ${i}`);
+// }
+
+// drawGrid(N);
+// updatePolygon(N, vals, labels);
 
 const getCSV = () => {
   fetch(CSVLINK)
@@ -159,10 +205,3 @@ const getCSV = () => {
   }
 };
 getCSV();
-
-// drawGrid(7);
-// updatePolygon(
-//   7,
-//   [10, 20, 30, 40, 50, 60, 70],
-//   ["p1", "p2", "p3", "p4", "p5", "p6", "p7"]
-// );

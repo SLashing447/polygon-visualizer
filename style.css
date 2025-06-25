@@ -1,48 +1,53 @@
 :root {
-  --BASE_POLY_COL: rgba(31, 66, 37, 0.7);
+  --BASE_POLY_COL: rgba(21, 41, 24, 0.7);
   --DYNAMIC_POLY_STROKE: rgb(93, 255, 5);
   --DYNAMIC_POLY_FILL: rgba(40, 142, 84, 0.5);
-  --HIGHLIGHTED_POLY_STROKE: lime;
+  --HIGHLIGHTED_POLY_STROKE: rgb(65, 226, 65);
   --STROKE-WIDTH: 2;
   --LABEL-FILL: rgb(71, 124, 71);
   --sides: 5;
 }
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  font-family: sans-serif;
+  height: 100vh;
+  width: 100vw;
+  /* font-family: sans-serif; */
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: #111;
   color: white;
 }
-
 .container {
-  padding: 20px;
-  /* width: 700px; */
-  /* border: 2px solid red; */
-  text-align: center;
+  /* border: 3px solid rgb(11, 48, 11); */
+  padding: 1rem;
+  transition: 0.07s all ease;
+  border-radius: 5px;
+  position: relative;
 }
-
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
+.container.hidearea::before {
+  display: none;
 }
-
-.control-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
+.container::before {
+  position: absolute;
+  content: attr(aria-details);
+  color: var(--LABEL-FILL);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  letter-spacing: 3px;
+  font-family: monospace;
+  font-weight: bold;
 }
-
-.control-group label {
-  margin-bottom: 5px;
-  font-size: 12px;
+.container:active {
+  scale: 0.99;
+  transform: translateY(2px);
 }
 
 .handle {
@@ -53,9 +58,15 @@ body {
 }
 
 .label {
-  font-size: 16px;
+  font-size: 15px;
+  letter-spacing: 1.5px;
   font-weight: bold;
+  /* font-feature-settings: "c2sc"; */
+  /* text-decoration: overline; */
+  /* font-variant: small-caps; */
+  font-family: "Fira Code", monospace;
   /* color: lime; */
+  text-shadow: 0 1px 3px rgba(144, 166, 144, 0.168);
   fill: var(--LABEL-FILL);
   /* padding: 12px; */
   pointer-events: none;
